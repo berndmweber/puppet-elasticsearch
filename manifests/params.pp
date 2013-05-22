@@ -54,6 +54,12 @@ class elasticsearch::params {
 
   #### Internal module values
 
+  $http_deb_location = 'https://download.elasticsearch.org/elasticsearch/elasticsearch'
+
+  $pkg_version = '0.20.6'
+
+  $pkgname = "elasticsearch-${pkg_version}.deb"
+
   # packages
   case $::operatingsystem {
     'CentOS', 'Fedora', 'Scientific', 'RedHat', 'Amazon', 'OracleLinux': {

@@ -51,17 +51,29 @@ class elasticsearch::package {
 
     $filenameArray = split($elasticsearch::pkg_source, '/')
     $basefilename = $filenameArray[-1]
+    $proto = $filenameArray[0]
 
     $extArray = split($basefilename, '\.')
     $ext = $extArray[-1]
 
     $tmpSource = "/tmp/${basefilename}"
 
-    file { $tmpSource:
-      source => $elasticsearch::pkg_source,
-      owner  => 'root',
-      group  => 'root',
-      backup => false
+    if $proto =~ /^http/ {
+      exec { 'download-pkg' :
+        cwd     => '/tmp',
+        path    => ['/usr/bin', '/bin'],
+        command => "curl -o ${basefilename} ${elasticsearch::pkg_source}",
+        creates => $tmpSource,
+        before  => Package [ $elasticsearch::params::package ],
+      }
+    } else {
+      file { $tmpSource:
+        source => $elasticsearch::pkg_source,
+        owner  => 'root',
+        group  => 'root',
+        backup => false,
+        before => Package [ $elasticsearch::params::package ],
+      }
     }
 
     case $ext {

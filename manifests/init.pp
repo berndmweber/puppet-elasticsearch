@@ -123,7 +123,7 @@ class elasticsearch(
   $restart_on_change = $elasticsearch::params::restart_on_change,
   $confdir           = $elasticsearch::params::confdir,
   $service_settings  = $elasticsearch::params::service_settings,
-  $pkg_source        = undef,
+  $pkg_source        = "${elasticsearch::params::http_deb_location}/${elasticsearch::params::pkgname}",
   $version           = false,
   $java_install      = false,
   $java_package      = undef,
